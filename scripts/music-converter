@@ -1,0 +1,40 @@
+#!/usr/bin/env python2
+import argparse
+import logging
+
+from music_converter.converter import convert_dir
+
+
+def main(args=None):
+    parser = argparse.ArgumentParser(
+        description='Converts flac/wav files to MP3'
+    )
+    parser.add_argument(
+        'in_dir',
+        help="directory, with from files should be readed",
+    )
+    parser.add_argument(
+        'out_dir',
+        help="directory, with where files should be written",
+    )
+    parser.add_argument(
+        '--sox-cmd',
+        default='sox', help="sox command",
+    )
+    parser.add_argument(
+        '--bitrate',
+        default=320, help="converted file bitrate",
+    )
+    parser.add_argument(
+        "-v", "--verbose",
+        help="increase output verbosity", action="store_true",
+    )
+
+    args = parser.parse_args(args)
+
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
+
+    convert_dir(args.in_dir, args.out_dir, args.sox_cmd)
+
+if __name__ == '__main__':
+    main()
